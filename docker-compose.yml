@@ -1,0 +1,61 @@
+# ============================================================
+# Zeus — docker-compose.yml
+# Full local stack (backend + optional local Postgres).
+#
+# Usage:
+#   docker compose up --build          # With local Postgres
+#   docker compose up backend          # Backend only (uses Neon/cloud DB)
+#
+# Environment:
+#   Copy .env.example → .env and fill in your values first.
+# ============================================================
+
+services:
+
+  # ─── Backend API ──────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Pass your HF token so the model can be downloaded at build time
+        HF_TOKEN: ${HF_TOKEN:-}
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      # Override DB URL to use the local Postgres container (when running full stack)
+      # Comment this out if using Neon (cloud) instead.
+      NEON_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/zeus
+      ENVIRONMENT: production
+      CORS_ORIGINS: "http://localhost:5173,http://localhost:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ─── Local PostgreSQL (optional, replaces Neon) ──────────
+  # Uses pgvector image so you can add vector search later.
+  # To use Neon instead, comment out this entire block and
+  # remove the NEON_DATABASE_URL override in `backend` above.
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: zeus
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d zeus"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+    driver: local

@@ -1,0 +1,48 @@
+# Git
+.git
+.gitignore
+
+# Python artifacts
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+.eggs
+dist/
+build/
+.venv/
+*.env
+
+# Frontend (not needed in backend image)
+frontend/
+node_modules/
+
+# Development / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test files
+tests/
+*.test.*
+coverage/
+.coverage
+
+# Docs
+*.md
+docs/
+
+# Uploads (runtime generated)
+uploads/
+
+# Notebooks
+notebooks/
+*.ipynb
+
+# Docker itself
+Dockerfile
+docker-compose.yml
+.dockerignore

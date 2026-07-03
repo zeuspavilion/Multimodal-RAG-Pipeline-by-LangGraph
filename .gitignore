@@ -1,0 +1,125 @@
+# ============================================================
+# Git Ignore Configuration - Root
+# ============================================================
+
+# ─── Environment & Secrets ──────────────────────────────────
+# Ignore environment configuration files containing API keys & secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*
+!.env.example
+*.env
+*.env.*
+
+# Ignore private keys, certificates, and credentials
+*.pem
+*.key
+*.pfx
+*.p12
+*.cer
+*.crt
+*.der
+*.keystore
+
+# ─── Python ──────────────────────────────────────────────────
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script run from a template
+#  before PyInstaller builds the exe, so content is dynamic
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Poetry / Pipenv / UV
+#   We keep lock files, but ignore local environments
+.venv/
+venv/
+ENV/
+env/
+pyvenv.cfg
+
+# ─── Node & Frontend ─────────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+*.local
+package-lock.json.log
+
+# ─── Databases, Checkpoints & Uploads ────────────────────────
+checkpoints.db
+backend/checkpoints.db-shm
+backend/checkpoints.db-wal
+/backend/data/
+/backend/__pycache__/
+/notebooks/
+db.sqlite3
+
+# ─── OS Files ────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ─── Editors & IDEs ──────────────────────────────────────────
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+.settings/
