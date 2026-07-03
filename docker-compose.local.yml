@@ -1,10 +1,10 @@
 # ============================================================
-# Zeus — docker-compose.yml
+# Zeus — docker-compose.local.yml
 # Full local stack (backend + optional local Postgres).
 #
 # Usage:
-#   docker compose up --build          # With local Postgres
-#   docker compose up backend          # Backend only (uses Neon/cloud DB)
+#   docker compose -f docker-compose.local.yml up --build          # With local Postgres
+#   docker compose -f docker-compose.local.yml up backend          # Backend only (uses Neon/cloud DB)
 #
 # Environment:
 #   Copy .env.example → .env and fill in your values first.

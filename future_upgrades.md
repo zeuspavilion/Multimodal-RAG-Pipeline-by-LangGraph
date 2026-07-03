@@ -48,7 +48,7 @@ A living document to track planned features, improvements, and technical debt fo
 ## 🔴 Long-Term (Infrastructure & Scale)
 
 ### Deployment
-- [ ] **Production Docker Setup** — Multi-stage Dockerfile with pre-baked embedding models; `docker-compose.yml` for local full-stack testing.
+- [ ] **Production Docker Setup** — Multi-stage Dockerfile with pre-baked embedding models; `docker-compose.local.yml` for local full-stack testing.
 - [ ] **CI/CD Pipeline** — GitHub Actions workflow to run lint + type checks on PRs and auto-deploy to Railway/Render on merge to `main`.
 - [ ] **Hosted Deployment** — Deploy backend to Railway/Render; frontend to Vercel or Cloudflare Pages.
 - [ ] **Sentry Integration** — Add error tracking to both frontend (Sentry JS SDK) and backend (Sentry Python SDK).
