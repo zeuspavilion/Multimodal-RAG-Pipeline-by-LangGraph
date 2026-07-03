@@ -195,5 +195,4 @@ JWT_EXPIRE_MINUTES = settings.JWT_EXPIRE_MINUTES
 # ---------------------------------
 
 ENVIRONMENT = settings.ENVIRONMENT
-# Comma-separated list of allowed CORS origins, parsed at startup
-CORS_ORIGINS: list[str] = [o.strip() for o in settings.CORS_ORIGINS.split(",") if o.strip()]
+CORS_ORIGINS: list[str] = [o.strip().strip("'\"") for o in settings.CORS_ORIGINS.split(",") if o.strip()]
