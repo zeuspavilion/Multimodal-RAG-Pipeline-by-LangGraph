@@ -354,6 +354,7 @@ Multimodal-RAG-Pipeline-by-LangGraph/
 ├── .python-version              # Target Python version specification (e.g. 3.11.x)
 ├── Dockerfile                   # Docker image definition for backend api deployment
 ├── docker-compose.yml           # Multi-container orchestration config (Backend, Postgres)
+├── deployment_strategies.md     # Guidelines and steps for production deployments
 ├── future_upgrades.md           # Roadmap for architectural upgrades and features
 ├── main.py                      # Simple script to print greeting
 ├── pyproject.toml               # Poetry/UV dependency requirements file
