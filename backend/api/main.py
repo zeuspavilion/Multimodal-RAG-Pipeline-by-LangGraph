@@ -18,7 +18,7 @@ from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from psycopg_pool import AsyncConnectionPool
 from psycopg.rows import dict_row
 
-from backend.api.routes import chat, upload
+
 from backend import config as app_config
 from backend.db.connection import init_pool, close_pool
 from backend.api.routes.upload import cleanup_old_uploads
@@ -28,6 +28,7 @@ from backend.api.routes import chat, upload, auth
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     
+    print(f"[startup] Configured CORS_ORIGINS: {app_config.CORS_ORIGINS}")
     print("[startup] Cleaning up old uploads...")
     await cleanup_old_uploads()
     # Init DB connection pool
@@ -78,7 +79,7 @@ async def lifespan(app: FastAPI):
     print("[shutdown] Cleaning up...")
 
 
-print(f"[startup] Configured CORS_ORIGINS: {app_config.CORS_ORIGINS}")
+
 
 app = FastAPI(
     title="Multimodal Agent API",
