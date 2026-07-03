@@ -82,7 +82,7 @@ This strategy splits compute and hosting resources. It uses Vercel for fast, edg
 6. Set the **Output Directory** to: `dist`
 7. Set the **Environment Variables**:
    - `VITE_API_URL`: `https://your-backend-url.railway.app` (The public domain of your backend API).
-8. Click **Deploy**. Vercel will bundle the SPA and serve it over a secure HTTPS edge network.
+8. Click **Deploy**. Vercel will build the React SPA. (Note: A [vercel.json](file:///c:/Users/Ronit/Downloads/Multimodal-RAG-Pipeline-by-LangGraph/Multimodal-RAG-Pipeline-by-LangGraph/frontend/vercel.json) file has been configured in the `frontend/` directory to automatically redirect all client-side paths back to `index.html`, preventing 404 errors when reloading pages like `/login` or `/signup`).
 
 ### Step 2: Deploying the FastAPI Backend to Railway
 1. Log in to [Railway.app](https://railway.app/).
