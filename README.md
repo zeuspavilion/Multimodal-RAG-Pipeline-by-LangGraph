@@ -62,10 +62,13 @@ To successfully deploy the codebase to cloud platforms, several architectural an
 ### 6. Git Secret Exclusion & Rules
 * **Action**: Configured ignore patterns in root and subfolder `.gitignore` files to guarantee that local `.env` files, temporary audio/PDF files in `backend/data/uploads`, database checkpoints, and system variables are never staged, keeping your active production credentials secure while pushing updates.
 
-### 7. Multi-Cloud Persistent Storage (AWS S3 Integration)
-* **Local Issue**: Railway containers run on ephemeral filesystems. If the container restarts or scales, all user-uploaded files are wiped out. Any subsequent user query attempting to reference these files will fail.
-* **Resolution**: Integrated an optional AWS S3 persistent object storage layer via `boto3` in [storage.py](file:///c:/Users/Ronit/Downloads/Multimodal-RAG-Pipeline-by-LangGraph/Multimodal-RAG-Pipeline-by-LangGraph/backend/utils/storage.py):
-  - **Uploads**: Files are saved locally for execution speed and uploaded to S3. 
-  - **Downloads**: If local cache misses (e.g. after container restart), worker nodes automatically download the file from S3 before processing.
-  - **Zero-Config Local Fallback**: Local development automatically falls back to local disk storage if AWS keys are not configured, maintaining zero-setup offline capability.
-  - **Configuration**: Expose `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_STORAGE_BUCKET_NAME`, and `AWS_S3_REGION` in Railway dashboard variables.
+### 7. Multi-Cloud Persistent Storage (Azure Blob Storage Integration)
+* **Problem Identified**: Railway containers run on an ephemeral filesystem — any files written at runtime (uploaded PDFs, images, audio) are permanently lost when the container restarts or is redeployed. This would cause silent failures if a user references an older upload.
+* **Solution Built**: Integrated an optional **Azure Blob Storage** persistent layer using the `azure-storage-blob` SDK in [`backend/utils/storage.py`](./backend/utils/storage.py):
+  - **`upload_file()`**: After saving a file locally, uploads it to Azure Blob Storage and returns an `azure://<container>/<blob>` URI.
+  - **`ensure_local_file()`**: Worker nodes call this before processing. If the local cache is missing (container restarted), the file is automatically downloaded from Azure before continuing.
+  - **Zero-Config Fallback**: If `AZURE_STORAGE_CONNECTION_STRING` is blank, the service transparently uses local disk — no code changes needed between environments.
+* **Verified**: Fully tested locally against `zeusstorage2957` (Azure Storage Account). Upload → local delete → download from Azure round-trip confirmed working.
+* **Production Status**: Azure credentials are **not configured in the Railway dashboard** intentionally — the Railway deployment uses the local disk fallback to avoid incurring unexpected Azure billing. The code, implementation, and test evidence exist in this repository.
+  - To enable in production: add `AZURE_STORAGE_CONNECTION_STRING` and `AZURE_STORAGE_CONTAINER_NAME` to Railway environment variables.
+
