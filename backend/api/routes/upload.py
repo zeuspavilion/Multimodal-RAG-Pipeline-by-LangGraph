@@ -1,7 +1,7 @@
 from typing import Annotated
 import uuid
 from pathlib import Path
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from backend.api.schemas import UploadResponse
 from backend.config import PROJECT_ROOT
 import asyncio
