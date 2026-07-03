@@ -9,13 +9,8 @@ from backend.db.vector_store import store_document_chunks, retrieve_similar_chun
 async def pdf_parser(file_path: str) -> dict:
     """Parse PDF and extract full text + URLs."""
     try:
-        path = Path(file_path)
-        if not path.is_absolute():
-            path = PROJECT_ROOT / path
-        path = path.resolve()
-
-        if not path.exists():
-            return {"success": False, "error": f"PDF not found: {path}"}
+        from backend.utils.storage import FileStorageService
+        path = FileStorageService.ensure_local_file(file_path)
 
         def _parse():
             loader = PyPDFLoader(str(path))

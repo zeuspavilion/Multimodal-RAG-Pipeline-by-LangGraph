@@ -34,6 +34,12 @@ class Settings(BaseSettings):
     # Deployment
     ENVIRONMENT: str = "development"  # "development" | "production"
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173,http://localhost:8501"
+
+    # AWS S3 Storage
+    AWS_ACCESS_KEY_ID: str = ""
+    AWS_SECRET_ACCESS_KEY: str = ""
+    AWS_STORAGE_BUCKET_NAME: str = ""
+    AWS_S3_REGION: str = "us-east-1"
     
     @model_validator(mode="after")
     def check_required_keys(self):
@@ -196,3 +202,29 @@ JWT_EXPIRE_MINUTES = settings.JWT_EXPIRE_MINUTES
 
 ENVIRONMENT = settings.ENVIRONMENT
 CORS_ORIGINS: list[str] = [o.strip().strip("'\"") for o in settings.CORS_ORIGINS.split(",") if o.strip()]
+
+# ---------------------------------
+# AWS S3 settings
+# ---------------------------------
+AWS_ACCESS_KEY_ID = settings.AWS_ACCESS_KEY_ID.strip("'\"")
+AWS_SECRET_ACCESS_KEY = settings.AWS_SECRET_ACCESS_KEY.strip("'\"")
+AWS_STORAGE_BUCKET_NAME = settings.AWS_STORAGE_BUCKET_NAME.strip("'\"")
+AWS_S3_REGION = settings.AWS_S3_REGION.strip("'\"")
+
+def get_s3_client():
+    """
+    Returns a configured boto3 S3 client if keys are present, otherwise None.
+    """
+    if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+        try:
+            import boto3
+            return boto3.client(
+                "s3",
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                region_name=AWS_S3_REGION or "us-east-1"
+            )
+        except Exception as e:
+            print(f"[warning] Failed to initialize S3 client: {e}")
+            return None
+    return None

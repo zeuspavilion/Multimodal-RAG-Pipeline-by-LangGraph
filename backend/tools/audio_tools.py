@@ -93,13 +93,8 @@ async def transcribe_audio(audio_path: str) -> dict:
     temp_dir = None
 
     try:
-        path = Path(audio_path)
-        if not path.is_absolute():
-            path = PROJECT_ROOT / path
-        path = path.resolve()
-
-        if not path.exists():
-            return {"success": False, "error": f"Audio file not found: {path}"}
+        from backend.utils.storage import FileStorageService
+        path = FileStorageService.ensure_local_file(audio_path)
 
         size_mb = path.stat().st_size / (1024 * 1024)
 
