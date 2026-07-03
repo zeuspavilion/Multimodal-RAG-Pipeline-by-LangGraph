@@ -19,15 +19,15 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    GROQ_API_KEY: str
-    TAVILY_API_KEY: str
-    HF_TOKEN: str
+    GROQ_API_KEY: str = ""
+    TAVILY_API_KEY: str = ""
+    HF_TOKEN: str = ""
     LANGCHAIN_API_KEY: str = ""
     LANGSMITH_ENDPOINT: str = ""
     NEON_DATABASE_URL: str = ""
     UPSTASH_REDIS_REST_URL: str = ""
     UPSTASH_REDIS_REST_TOKEN: str = ""
-    JWT_SECRET_KEY: str
+    JWT_SECRET_KEY: str = ""
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRE_MINUTES: int = 60 * 24 * 7
 
