@@ -6,8 +6,8 @@ from backend.api.schemas import UploadResponse
 from backend.config import PROJECT_ROOT
 import asyncio
 from datetime import datetime, timezone
-from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from backend.api.dependencies import get_current_user
+from backend.utils.storage import FileStorageService
 
 router=APIRouter()
 
@@ -109,7 +109,10 @@ async def upload_files(
 
         save_path.write_bytes(contents)
 
-        saved_paths.append(str(save_path))
+        # Upload to persistent storage (S3) or fallback to local path string
+        storage_path = FileStorageService.upload_file(save_path)
+
+        saved_paths.append(storage_path)
         saved_names.append(file.filename)
 
     return UploadResponse(

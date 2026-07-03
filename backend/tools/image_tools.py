@@ -32,13 +32,8 @@ async def _call_vision(messages: list) -> str:
 async def image_analyser(file_path: str, query: str = "Describe this image in detail.") -> dict:
     """Analyze an image using a vision model."""
     try:
-        path = Path(file_path)
-        if not path.is_absolute():
-            path = PROJECT_ROOT / path
-        path = path.resolve()
-
-        if not path.exists():
-            return {"success": False, "error": f"Image file not found: {path}"}
+        from backend.utils.storage import FileStorageService
+        path = FileStorageService.ensure_local_file(file_path)
 
         mime_type, _ = mimetypes.guess_type(path)
         if mime_type is None:

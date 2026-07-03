@@ -78,6 +78,8 @@ async def lifespan(app: FastAPI):
     print("[shutdown] Cleaning up...")
 
 
+print(f"[startup] Configured CORS_ORIGINS: {app_config.CORS_ORIGINS}")
+
 app = FastAPI(
     title="Multimodal Agent API",
     description="LangGraph-powered multimodal RAG agent",
