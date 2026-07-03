@@ -61,3 +61,11 @@ To successfully deploy the codebase to cloud platforms, several architectural an
 
 ### 6. Git Secret Exclusion & Rules
 * **Action**: Configured ignore patterns in root and subfolder `.gitignore` files to guarantee that local `.env` files, temporary audio/PDF files in `backend/data/uploads`, database checkpoints, and system variables are never staged, keeping your active production credentials secure while pushing updates.
+
+### 7. Multi-Cloud Persistent Storage (AWS S3 Integration)
+* **Local Issue**: Railway containers run on ephemeral filesystems. If the container restarts or scales, all user-uploaded files are wiped out. Any subsequent user query attempting to reference these files will fail.
+* **Resolution**: Integrated an optional AWS S3 persistent object storage layer via `boto3` in [storage.py](file:///c:/Users/Ronit/Downloads/Multimodal-RAG-Pipeline-by-LangGraph/Multimodal-RAG-Pipeline-by-LangGraph/backend/utils/storage.py):
+  - **Uploads**: Files are saved locally for execution speed and uploaded to S3. 
+  - **Downloads**: If local cache misses (e.g. after container restart), worker nodes automatically download the file from S3 before processing.
+  - **Zero-Config Local Fallback**: Local development automatically falls back to local disk storage if AWS keys are not configured, maintaining zero-setup offline capability.
+  - **Configuration**: Expose `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_STORAGE_BUCKET_NAME`, and `AWS_S3_REGION` in Railway dashboard variables.
